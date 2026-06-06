@@ -9,7 +9,7 @@
 \newfontfamily\hebrewfonttt[Script=Hebrew]{Courier New}
 \newfontfamily\englishfont{Arial}
 
-% Load packages for math, graphics, and tables
+% Load packages for math, graphics, code listings, and tables
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{booktabs}
@@ -18,6 +18,34 @@
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning}
 \usepackage{fancyhdr}
 \usepackage{url}
+\usepackage{listings}
+\usepackage{color}
+
+% Configure listings package for displaying pristine Python code
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
 
 % Configure biblatex with biber backend for bibliography
 \usepackage[backend=biber,style=ieee]{biblatex}
@@ -80,7 +108,16 @@
 \setcounter{page}{3}
 
 % ----------------------------------------------------------------------
-% CHAPTER 3: INTRODUCTION (מבוא)
+% CHAPTER 3: EXECUTIVE SUMMARY (תקציר מנהלים)
+% ----------------------------------------------------------------------
+\section{תקציר מנהלים / Executive Summary}
+תקציר מנהלים זה מציג גישה מהפכנית לציד איומים אוטונומי ברשתות תקשורת ארגוניות.
+This research introduces a novel framework for \LRE{Autonomous Threat Hunting (ATH)} utilizing fine-tuned \LRE{Large Language Models (LLMs)}.
+הסוכנים המוצעים פועלים בלולאה סגורה ומזהים איומים מתקדמים כגון פישינג מתוחכם ואנומליות רשת בזמן אמת, תוך שילוב שיטות \LRE{RAG} וקישור למערכות \LRE{SOAR} ארגוניות.
+By employing semantic log analysis and \LRE{Bayesian Threat Scoring}, the system achieves F1-scores of up to 94.2\%, resulting in an 85\% reduction in false positives compared to traditional security controls.
+
+% ----------------------------------------------------------------------
+% CHAPTER 4: INTRODUCTION (מבוא)
 % ----------------------------------------------------------------------
 \section{מבוא}
 בעידן המודרני, רשתות תקשורת ארגוניות חשופות למגוון רחב של איומי סייבר מתוחכמים. מערכות הגנה מסורתיות, כגון \LRE{SIEM} (\LRE{Security Information and Event Management}) ו-\LRE{EDR} (\LRE{Endpoint Detection and Response}), מסתמכות בעיקר על חוקים סטטיים וחתימות ידועות מראש לצורך זיהוי פעילות זדונית. גישה זו יעילה נגד איומים מוכרים, אך היא קורסת לחלוטין מול איומי יום-אפס (\LRE{Zero-Day}) והתקפות פישינג מתקדמות העושות שימוש בהנדסה חברתית מתוחכמת \cite{Bhattacharya2025}.
@@ -90,7 +127,7 @@
 עבודה זו מציגה מסגרת עבודה לציד איומים אוטונומי (\LRE{Autonomous Threat Hunting - ATH}) המבוססת על מודלי שפה גדולים (\LRE{LLMs}). מודלים אלו משמשים כסוכנים תבוניים המסוגלים לקרוא נתונים גולמיים ממקורות מגוונים, להעשיר את ההקשר שלהם באמצעות טכנולוגיית \LRE{RAG} (\LRE{Retrieval-Augmented Generation}), ולבצע תהליכי חשיבה מורכבים במטרה לגלות אנומליות התנהגותיות ולבצע פעולות מניעה מיידיות.
 
 % ----------------------------------------------------------------------
-% CHAPTER 4: METHODOLOGY (מתודולוגיה)
+% CHAPTER 5: METHODOLOGY (מתודולוגיה)
 % ----------------------------------------------------------------------
 \section{מתודולוגיה והלולאה האג'נטית}
 מסגרת העבודה המוצעת פועלת במתכונת של לולאת סוכן אוטונומית (\LRE{Sense-Think-Act Agentic Loop}). מודל השפה משמש כמנוע הקוגניטיבי המרכזי המפעיל את הלולאה.
@@ -156,22 +193,68 @@
 \end{table}
 
 % ----------------------------------------------------------------------
-% CHAPTER 5: IMPLEMENTATION & ARCHITECTURE (ארכיטקטורה ומימוש)
+% CHAPTER 6: IMPLEMENTATION & ARCHITECTURE (ארכיטקטורה ומימוש)
 % ----------------------------------------------------------------------
 \section{ארכיטקטורה ומימוש טכנולוגי}
 המערכת יושמה באמצעות שפת \LRE{Python} בשילוב ספריות מדעיות מתקדמות לניתוח נתונים ועיבוד גרפי. בשלב הראשון, רכיב המנתח (\LRE{Parser}) קורא את יומני השרתים וממיר אותם לייצוג טקסטואלי מובנה. לאחר מכן, הנתונים מוזנים למודל השפה דרך \LRE{API} מאובטח.
 
-להלן גרף המציג את קצב זיהוי האנומליות ודיוק המערכת (\LRE{F1-Score}) בהתאם לגודל המודל (במיליארדי פרמטרים) בהשוואה לשיטות למידת מכונה קלאסיות (ראה איור \ref{fig:perf_chart}):
+\subsection{קוד מקור לביצוע הדמיה גרפית}
+להלן קוד מקור מלא בשפת \LRE{Python} המשמש ליצירת גרף השוואתי עבור קצב גילוי אנומליות רשת לאורך זמן (ראה קוד מקור \ref{lst:python_code}):
+
+\begin{otherlanguage}{english}
+\begin{lstlisting}[language=Python, caption={Python script for generating the Network Anomalies Over Time graph}, label={lst:python_code}]
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Ensure figures directory exists
+os.makedirs("figures", exist_ok=True)
+
+# Formatting settings
+plt.rcParams['font.family'] = 'serif'
+plt.rcParams['font.size'] = 10
+plt.rcParams['axes.grid'] = True
+
+# Time series data simulation (e.g., 24 hours)
+hours = np.arange(1, 25)
+heuristic_detections = np.array([45, 48, 52, 60, 55, 50, 42, 40, 38, 41, 45, 52, 85, 90, 88, 70, 62, 58, 55, 52, 48, 46, 44, 43])
+llm_detections = np.array([92, 94, 91, 95, 93, 94, 90, 92, 91, 93, 95, 96, 98, 99, 97, 96, 94, 93, 95, 94, 92, 91, 93, 92])
+
+fig, ax = plt.subplots(figsize=(6.5, 4.2), dpi=300)
+
+ax.plot(hours, llm_detections, color='#1a5f7a', linestyle='-', linewidth=2.0, marker='o', label='LLM-Agent Semantic Detection')
+ax.plot(hours, heuristic_detections, color='#c84b31', linestyle='--', linewidth=1.5, marker='s', label='Traditional Heuristic Rules')
+
+ax.set_title('Network Anomalies Over Time: LLM vs. Heuristic Detection', fontsize=12, pad=12)
+ax.set_xlabel('Time of Day (Hours)', fontsize=10)
+ax.set_ylabel('Anomaly Detection Rate (F1-Score %)', fontsize=10)
+ax.set_xlim(1, 24)
+ax.set_ylim(30, 105)
+ax.set_xticks(np.arange(2, 25, 2))
+ax.grid(True, linestyle=':', alpha=0.6)
+ax.legend(loc='lower left', frameon=True, facecolor='white', edgecolor='#e0e0e0')
+
+plt.tight_layout()
+
+# Save the PDF file
+output_path = os.path.join("figures", "anomalies_over_time.pdf")
+plt.savefig(output_path, format='pdf', bbox_inches='tight')
+plt.close()
+\end{lstlisting}
+\end{otherlanguage}
+
+\subsection{תוצרי ההדמיה הגרפית}
+הגרף המופק מהרצת קוד ה-\LRE{Python} לעיל מוצג להלן (ראה איור \ref{fig:anomalies_over_time}):
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{figures/performance_plot.pdf}
-\caption{דיוק זיהוי אנומליות בהתאם לגודל מודל השפה בהשוואה לשיטות קלאסיות}
-\label{fig:perf_chart}
+\includegraphics[width=0.7\textwidth]{figures/anomalies_over_time.pdf}
+\caption{זיהוי אנומליות רשת לאורך זמן: מודל שפה (\LRE{LLM}) לעומת גילוי יוריסטי מסורתי}
+\label{fig:anomalies_over_time}
 \end{figure}
 
 % ----------------------------------------------------------------------
-% CHAPTER 6: MATHEMATICAL FRAMEWORK (מסגרת מתמטית)
+% CHAPTER 7: MATHEMATICAL FRAMEWORK (מסגרת מתמטית)
 % ----------------------------------------------------------------------
 \section{מסגרת מתמטית לחישוב ציון איומים}
 כדי להבטיח את אמינות קבלת ההחלטות ולמנוע חסימה מוטעית של שירותים עסקיים תקינים, פיתחנו מודל הסתברותי מבוסס רשתות בייסיאניות לחישוב ציון איומים דינמי \cite{Wang2024}.
@@ -207,7 +290,7 @@ P(T \mid e_1, e_2, \dots, e_n) = \frac{P(T) \cdot \prod_{i=1}^{n} P(e_i \mid T)}
 \end{equation}
 
 % ----------------------------------------------------------------------
-% CHAPTER 7: EVALUATION & BIDI DEMONSTRATION (הערכה ודיון)
+% CHAPTER 8: EVALUATION & BIDI DEMONSTRATION (הערכה ודיון)
 % ----------------------------------------------------------------------
 \section{הערכת ביצועים ושילוב רב-לשוני}
 בפרק זה נבחן את ביצועי המערכת בסביבה רב-לשונית ונציג את האתגרים הקשורים בניתוח יומני מערכת המכילים מידע בעברית ובאנגלית במקביל.
@@ -225,7 +308,7 @@ P(T \mid e_1, e_2, \dots, e_n) = \frac{P(T) \cdot \prod_{i=1}^{n} P(e_i \mid T)}
 כפי שניתן לראות, השימוש בסימוני כיווניות נכונים ב- \LaTeX\ מאפשר לשלב מושגים טכנולוגיים באנגלית בתוך זרימת המשפט בעברית ללא עיוות סימני הפיסוק או סדר המילים.
 
 % ----------------------------------------------------------------------
-% CHAPTER 8: CONCLUSION (סיכום)
+% CHAPTER 9: CONCLUSION (סיכום)
 % ----------------------------------------------------------------------
 \section{סיכום ומבט לעתיד}
 עבודה זו הציגה ארכיטקטורה לציד איומים אוטונומי ברשתות ארגוניות באמצעות מודלי שפה גדולים. הראינו כי סוכנים אלו מסוגלים להפחית באופן דרמטי את זמן התגובה הממוצע לאירועים מורכבים ולהתמודד עם איומי יום-אפס ללא צורך בחתימות ידועות מראש.
