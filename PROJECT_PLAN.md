@@ -1,32 +1,40 @@
 # Project Plan: ATH Whitepaper Development
 ## Role: Technical Project Manager (TPM)
 
-### Phase 1: Research & Discovery (Week 1)
-- [ ] **Task 1.1:** Finalize core research questions and thesis statement.
-- [ ] **Task 1.2:** Conduct a comprehensive literature search on LLM-based cybersecurity (2023-2024).
-- [ ] **Task 1.3:** Identify and download benchmark datasets (CIC-IDS2017, PhishTank, Enron Email).
+### Phase 1: Environment Setup & Tooling Verification
+- [ ] Initialize repository structure and configure Git.
+- [ ] Establish Python environment and install scientific libraries (`matplotlib`, `seaborn`, `pandas`).
+- [ ] Verify LaTeX packages (`polyglossia`, `bidi`, `fancyhdr`, `tikz`, `amsmath`, `booktabs`, `hyperref`).
+- [ ] Set up master document templates and build pipelines.
 
-### Phase 2: Technical Architecture & Methodology (Week 2)
-- [ ] **Task 2.1:** Design the ATH Framework high-level diagram.
-- [ ] **Task 2.2:** Define the RAG (Retrieval-Augmented Generation) pipeline for threat intelligence.
-- [ ] **Task 2.3:** Select LLM candidates for benchmarking (OpenAI vs. Open Source).
+### Phase 2: Literature Search & Reference Acquisition
+- [ ] Source academic literature on LLM threat hunting and network anomaly detection.
+- [ ] Compile citation keys in BibTeX formatting in the references database.
+- [ ] Define the cybersecurity glossary and translations for Hebrew terminologies.
 
-### Phase 3: Simulation & Data Analysis (Week 3-4)
-- [ ] **Task 3.1:** Setup Python environment for data preprocessing.
-- [ ] **Task 3.2:** Execute anomaly detection simulations on historical logs.
-- [ ] **Task 3.3:** Run phishing identification tests against the dataset.
-- [ ] **Task 3.4:** Collate results and generate performance charts.
+### Phase 3: Structural Inception (Cover Sheet & Table of Contents)
+- [ ] Draft Cover Sheet containing the title, author details, course title, and lecturer name.
+- [ ] Code the Table of Contents with hyper-linking features enabled.
+- [ ] Set up layout configurations including headers and footers.
 
-### Phase 4: Drafting & Academic Synthesis (Week 5-6)
-- [ ] **Task 4.1:** Draft Section 1-3 (Abstract, Intro, Lit Review).
-- [ ] **Task 4.2:** Draft Section 4-5 (Architecture & Methodology).
-- [ ] **Task 4.3:** Draft Section 6-7 (Results & Discussion).
-- [ ] **Task 4.4:** Perform internal "Red Team" review for technical accuracy.
+### Phase 4: Core Drafting (Introduction & Methodology)
+- [ ] Draft Chapter 3 (Introduction) in Hebrew detailing traditional SOC limitations and LLM opportunities.
+- [ ] Draft Chapter 4 (Methodology) defining the "Sense-Think-Act" loop.
+- [ ] Develop the TikZ block diagram representing the autonomous threat-hunting flow.
+- [ ] Construct the comparison table between manual SOC and LLM-driven hunting.
 
-### Phase 5: Finalization & Handover (Week 7)
-- [ ] **Task 5.1:** Academic formatting (IEEE or ACM style).
-- [ ] **Task 5.2:** Final copy-editing and reference verification.
-- [ ] **Task 5.3:** Export PDF and push final version to GitHub.
+### Phase 5: Implementation, Architecture & Data Visualization
+- [ ] Draft Chapter 5 (Implementation & Architecture) describing the ingestion framework and parser.
+- [ ] Write Python scripts to generate high-resolution comparison charts of F1-scores.
+- [ ] Insert visual charts into the LaTeX layout.
 
----
-**Milestone:** 15-Page Academic-Grade Whitepaper Ready for Submission.
+### Phase 6: Probabilistic Modeling & Multilingual Localization
+- [ ] Draft Chapter 6 (Mathematical Framework) derived with Bayesian scoring equations.
+- [ ] Draft Chapter 7 (Evaluation & Discussion) detailing performance trials.
+- [ ] Embed the mixed-language (Hebrew and English) bidirectional formatting demonstration text.
+
+### Phase 7: Synthesis & Compilation Runs
+- [ ] Draft Chapter 8 (Conclusion) summarizing key results and future development pathways.
+- [ ] Convert all Markdown components to LaTeX structures.
+- [ ] Execute compilation iterations (4 separate compiler runs) to sync references and links.
+- [ ] Perform QA verification, validate the 15-page length, and deliver the final PDF.
