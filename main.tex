@@ -64,7 +64,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\textenglish{Autonomous Threat Hunting - LLM Framework}}
-\fancyfoot[R]{\textenglish{Page \thepage\ of 14}}
+\fancyfoot[R]{\textenglish{Page \thepage\ of 16}}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 
@@ -162,6 +162,26 @@ By employing semantic log analysis and \LRE{Bayesian Threat Scoring}, the system
 
 \subsection{שילוב RAG מודיעין איומים ופיתוח פרומפטים}
 בשלב ה"חשיבה", הסוכן משתמש במסדי נתונים וקטוריים (כמו \LRE{ChromaDB} או \LRE{FAISS}) המכילים את מסמכי התיעוד הרשמיים של קבוצות תקיפה שונות. מנוע ה-\LRE{RAG} מאפשר לסוכן לשלוף במהירות את הקשר האיום הרלוונטי על בסיס דמיון סמנטי של הלוגים המשודרים. פיתוח הפרומפט מעוצב באופן שמנחה את המודל לפרט את הראיות התומכות והראיות המפריכות את קיומו של איום, ובכך למנוע תופעות של הזיה (\LRE{Hallucination}) של אירועי אבטחה שלא התרחשו במציאות.
+
+עיצוב הפרומפטים כולל הנחיות קפדניות לסיווג לוגי מדורג, כפי שמוצג בקוד המקור הבא (ראה קוד מקור \ref{lst:cot_prompt}):
+
+\begin{LTR}
+\begin{lstlisting}[language=bash, caption={System Prompt Template for the ATH CoT Agent}, label={lst:cot_prompt}]
+You are an expert Autonomous Threat Hunter.
+Analyze the following security log and determine if it represents a threat.
+Logs: {log_content}
+Threat Intelligence Context: {rag_context}
+
+Follow these steps for your reasoning:
+1. Identify all IP addresses, user accounts, and process hashes.
+2. Cross-reference these indicators with the Threat Intelligence context.
+3. List the evidence supporting the presence of a threat.
+4. List the evidence supporting a benign explanation.
+5. Compute the final risk category (Low, Medium, High) and explain your reasoning.
+Output in JSON format with keys: "reasoning_steps", "threat_detected", "severity".
+\end{lstlisting}
+\end{LTR}
+
 
 \subsection{היררכיית מודלים וניתוב איומים דינמי}
 כחלק משיפור יעילות העבודה, פיתחנו מנגנון ניתוב איומים דו-שלבי המבוסס על רמת מורכבות האירוע. אירועים פשוטים וברורים מנותבים ישירות למודלים קטנים ומקומיים (\LRE{On-Premise LLMs}) כגון Llama-3-8B המותקנים על גבי שרתי הארגון ללא חשיפת מידע לענן חיצוני. במקרים של אירועים רב-מערכתיים מורכבים המצריכים יכולות ניתוח לוגי מתקדמות והבנת הקשרים רחבים, המערכת מנתב את האירוע באופן דינמי למודלים רחבי פרמטרים כגון GPT-4o לצורך פתרון מעמיק וקבלת החלטה סופית.
@@ -338,6 +358,27 @@ H(X) = -\sum_{i=1}^{n} P(x_i) \log_2 P(x_i)
 \end{equation}
 
 כאשר ערכי $H(X)$ גבוהים מהנורמה עבור פרוטוקול מסוים (כמו HTTP או DNS tunneling) מתווספים כאינדיקטורים נוספים לרשת הבייסיאנית, מה שמסייע לגילוי ערוצי תקשורת סמויים של תוקפים (\LRE{C2 channels}).
+
+\subsection{מודל אופטימיזציה כלכלית של סף ההחלטה}
+כדי לקבוע את סף החסימה האופטימלי $S$ עבור המערכת האג'נטית, אנו מגדירים פונקציית הפסד כלכלית המאזנת בין עלות האירועים הזדוניים שלא נחסמו (False Negatives) לבין עלות חסימות השווא של שירותים לגיטימיים (False Positives). נסמן ב-$C_{FP}$ את העלות הכלכלית של התראת שווא בודדת (למשל, השבתת מערכת או פגיעה בפריון העבודה של העובדים) וב-$C_{FN}$ את העלות הכלכלית של חדירה מוצלחת עקב אי-חסימה (למשל, עלות שיקום ממתקפת כופרה).
+
+פונקציית ההפסד הכוללת $L(S)$ מוגדרת כתוחלת העלות:
+\begin{equation}
+L(S) = C_{FP} \cdot P(A \mid \neg T) \cdot P(\neg T) \cdot I(P(T \mid A) > S) + C_{FN} \cdot P(\neg A \mid T) \cdot P(T) \cdot I(P(T \mid A) \le S)
+\end{equation}
+
+כאשר $I(\cdot)$ היא פונקציית אינדיקטור השווה ל-1 אם התנאי מתקיים ו-0 אחרת. בהתאם לתורת ההחלטות הבייסיאנית, סף ההחלטה האופטימלי $S^*$ הממזער את תוחלת ההפסד הכלכלי מתקבל על ידי הנוסחה הבאה:
+\begin{equation}
+S^* = \frac{C_{FP}}{C_{FP} + C_{FN}}
+\label{eq:optimal_threshold}
+\end{equation}
+
+בסביבה ארגונית טיפוסית, עלות מתקפה מוצלחת גבוהה בכמה סדרי גודל מעלות השבתת שירות זמני (כלומר, $C_{FN} \gg C_{FP}$). לדוגמה, אם נניח כי עלות חסימת שווא היא $C_{FP} = \$500$ ועלות מתקפת כופרה היא $C_{FN} = \$50,000$, נקבל כי סף החסימה האופטימלי הוא:
+\begin{equation}
+S^* = \frac{500}{500 + 50,000} \approx 0.0099
+\end{equation}
+
+תוצאה זו מראה כי די בסבירות של אחוז בודד ($1\%$) לקיומו של איום ממשי כדי להצדיק חסימה אוטומטית ומניעה אקטיבית, וזאת מתוך שיקולי ניהול סיכונים קפדניים.
 
 \subsection{דוגמה מספרית לתהליך קבלת ההחלטות}
 נניח כי ההסתברות האפריורית לקיומו של איום במקטע זה היא $P(T) = 0.05$. רגישות הגלאי לאנומליות היא $P(A \mid T) = 0.95$, בעוד ששיעור התראות השווא של הגלאי תחת תנאי שגרה הוא $P(A \mid \neg T) = 0.10$. 
