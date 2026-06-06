@@ -129,8 +129,8 @@
     \draw [arrow] (parser) -- (llm);
     \draw [arrow] (rag) -- (parser);
     \draw [arrow] (llm) -- (eval);
-    \draw [arrow] (eval) -- node[anchor=south, textenglish]{Yes} (act);
-    \draw [arrow] (eval) -- node[anchor=south, textenglish]{No} (clear);
+    \draw [arrow] (eval) -- node[anchor=south] {\LRE{Yes}} (act);
+    \draw [arrow] (eval) -- node[anchor=south] {\LRE{No}} (clear);
 \end{tikzpicture}
 \caption{ארכיטקטורת מערכת ציד האיומים האוטונומית (\LRE{ATH})}
 \label{fig:tikz_arch}
