@@ -23,10 +23,10 @@ from checkers import (
 
 # ─── File paths (relative to project root) ───────────────────────────
 PYTHON_FILES = [
-    "agent_system.py",
-    "config.py",
-    "agents.py",
-    "tasks.py",
+    "src/agent_system.py",
+    "src/config.py",
+    "src/agents.py",
+    "src/tasks.py",
     "latex/scripts/generate_graph.py",
     "latex/scripts/generate_graph_anomalies.py",
 ]

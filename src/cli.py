@@ -8,7 +8,7 @@ from datetime import datetime
 from pathlib import Path
 
 VERSION = "1.0.0"
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # ─── ANSI Color Helpers ──────────────────────────────────────────────
 RESET = "\033[0m"
@@ -72,7 +72,7 @@ def cmd_build(args: argparse.Namespace) -> None:
 
 def cmd_check(args: argparse.Namespace) -> None:
     _info("Running quality & compliance checks …")
-    check_script = PROJECT_ROOT / "scripts" / "run_quality_checks.py"
+    check_script = PROJECT_ROOT / "src" / "scripts" / "run_quality_checks.py"
     if not check_script.exists():
         _error(f"Check script not found: {check_script}")
         sys.exit(1)
@@ -99,9 +99,9 @@ def cmd_graphs(args: argparse.Namespace) -> None:
 
 def cmd_status(args: argparse.Namespace) -> None:
     key_files = [
-        "agent_system.py", "agents.py", "tasks.py", "config.py",
-        "cli.py", "logger_setup.py", "latex/main.tex",
-        "latex/references.bib", "scripts/run_quality_checks.py",
+        "src/agent_system.py", "src/agents.py", "src/tasks.py", "src/config.py",
+        "src/cli.py", "src/logger_setup.py", "latex/main.tex",
+        "latex/references.bib", "src/scripts/run_quality_checks.py",
     ]
     _info("Project file status:")
     header = f"  {'File':<35} {'Lines':>6}  {'Modified':<20}  Status"

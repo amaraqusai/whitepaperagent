@@ -12,7 +12,7 @@ from typing import Callable, TypeVar
 F = TypeVar("F", bound=Callable)
 
 # ─── Constants ────────────────────────────────────────────────────────
-LOG_DIR = Path(__file__).resolve().parent / "logs"
+LOG_DIR = Path(__file__).resolve().parent.parent / "logs"
 LOG_FILE = LOG_DIR / "pipeline.log"
 MAX_BYTES = 5 * 1024 * 1024  # 5 MB per log file
 BACKUP_COUNT = 3

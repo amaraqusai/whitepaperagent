@@ -7,7 +7,7 @@ import time
 from pathlib import Path
 
 # ── Paths (relative to project root) ─────────────────────────────────
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
 POLISHED_TEX = ROOT / "output" / "polished_main.tex"
 LATEX_DIR = ROOT / "latex"
 MAIN_TEX = LATEX_DIR / "main.tex"

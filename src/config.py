@@ -38,13 +38,13 @@ OUTPUT_DIR = Path("output")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 # ─── Read the project outline if available ───────────────────────────
-outline_path = Path("OUTLINE.md")
+outline_path = Path("docs/OUTLINE.md")
 if outline_path.exists():
     outline_content = outline_path.read_text(encoding="utf-8")
 else:
     outline_content = "Topic: Autonomous Threat Hunting using LLMs in Enterprise Networks"
 
-research_notes_path = Path("RESEARCH_NOTES.md")
+research_notes_path = Path("docs/RESEARCH_NOTES.md")
 if research_notes_path.exists():
     research_notes = research_notes_path.read_text(encoding="utf-8")
 else:
