@@ -7,6 +7,12 @@ research-to-publication pipeline.
 
 from crewai import Agent
 from config import gemini_llm
+from tools import FileWriterTool, LaTeXValidatorTool, BibTeXLookupTool, WordCountTool
+
+file_writer = FileWriterTool()
+latex_validator = LaTeXValidatorTool()
+bibtex_lookup = BibTeXLookupTool()
+word_counter = WordCountTool()
 
 
 # ── Agent 1 ──────────────────────────────────────────────────────────
@@ -27,6 +33,7 @@ researcher = Agent(
         "MITRE ATT&CK, and IEEE/ACM journals."
     ),
     llm=gemini_llm,
+    tools=[file_writer, bibtex_lookup],
     verbose=True,
     allow_delegation=False,
 )
@@ -49,6 +56,7 @@ data_scientist = Agent(
         "academic publication."
     ),
     llm=gemini_llm,
+    tools=[file_writer],
     verbose=True,
     allow_delegation=False,
 )
@@ -72,6 +80,7 @@ markdown_writer = Agent(
         "professional academic Hebrew."
     ),
     llm=gemini_llm,
+    tools=[file_writer, word_counter],
     verbose=True,
     allow_delegation=False,
 )
@@ -97,6 +106,7 @@ latex_typesetter = Agent(
         "after 4 compilation passes."
     ),
     llm=gemini_llm,
+    tools=[file_writer, latex_validator],
     verbose=True,
     allow_delegation=False,
 )
@@ -120,6 +130,7 @@ qa_editor = Agent(
         "warnings or errors."
     ),
     llm=gemini_llm,
+    tools=[file_writer, latex_validator, bibtex_lookup],
     verbose=True,
     allow_delegation=False,
 )
