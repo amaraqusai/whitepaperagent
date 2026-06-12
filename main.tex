@@ -21,6 +21,7 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{tabularx}
+\usepackage{lastpage}
 
 % Define centered column type for tabularx
 \newcolumntype{C}{>{\centering\arraybackslash}X}
@@ -59,12 +60,13 @@
 % Set margins and layout - generous padding for academic style
 \usepackage[top=1.3in,bottom=1.3in,left=1.3in,right=1.3in]{geometry}
 \linespread{1.5} % Comfortable line spacing to match 15 pages target
+\setlength{\headheight}{14.5pt}
 
 % Configure headers and footers using fancyhdr
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\textenglish{Autonomous Threat Hunting - LLM Framework}}
-\fancyfoot[R]{\textenglish{Page \thepage\ of 16}}
+\fancyfoot[R]{\textenglish{Page \thepage\ of \pageref{LastPage}}}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 
@@ -90,7 +92,7 @@
 \vspace{1cm}
 {\Large\bfseries Autonomous Threat Hunting: Leveraging LLMs for Anomaly Detection and Phishing Identification in Enterprise Networks \par}
 \vspace{2cm}
-{\large\bfseries מגיש: אלוף הסייבר \par}
+{\large\bfseries מגיש: קוסאי עמארה \par}
 \vspace{0.8cm}
 {\large קורס: מערכות אבטחה ארגוניות מתקדמות ואוטומציה \par}
 \vspace{0.8cm}
@@ -373,7 +375,10 @@ H(X) = -\sum_{i=1}^{n} P(x_i) \log_2 P(x_i)
 
 פונקציית ההפסד הכוללת $L(S)$ מוגדרת כתוחלת העלות:
 \begin{equation}
-L(S) = C_{FP} \cdot P(A \mid \neg T) \cdot P(\neg T) \cdot I(P(T \mid A) > S) + C_{FN} \cdot P(\neg A \mid T) \cdot P(T) \cdot I(P(T \mid A) \le S)
+\begin{split}
+L(S) = & C_{FP} \cdot P(A \mid \neg T) \cdot P(\neg T) \cdot I(P(T \mid A) > S) \\
+& + C_{FN} \cdot P(\neg A \mid T) \cdot P(T) \cdot I(P(T \mid A) \le S)
+\end{split}
 \end{equation}
 
 כאשר $I(\cdot)$ היא פונקציית אינדיקטור השווה ל-1 אם התנאי מתקיים ו-0 אחרת. בהתאם לתורת ההחלטות הבייסיאנית, סף ההחלטה האופטימלי $S^*$ הממזער את תוחלת ההפסד הכלכלי מתקבל על ידי הנוסחה הבאה:
@@ -405,6 +410,17 @@ P(T \mid A) = \frac{0.95 \times 0.05}{(0.95 \times 0.05) + (0.10 \times 0.95)} =
 \section{הערכת ביצועים ושילוב רב-לשוני}
 \subsection{ניתוח תוצאות הניסויים האמפיריים}
 הערכת הביצועים התבצעה באמצעות הרצת סימולציות מורכבות על גבי מערכי נתונים ציבוריים וסינתטיים. תוצאות הניסויים הראו כי סוכן ה-\LRE{LLM} הצליח לגלות מעל $94.2\%$ מהתקפות הפישינג החדשות, בהשוואה ל-$81.2\%$ בלבד במערכות יוריסטיות סטנדרטיות.
+
+כפי שמוצג באיור \ref{fig:performance_plot}, קיים קשר ישיר בין גודל פרמטרי מודל השפה לבין דיוק גילוי האיומים (F1-Score), כאשר המודלים מרובי הפרמטרים מראים שיפור עקבי לעומת מסווגי למידת מכונה מסורתיים (כגון יערות אקראיים ו-SVM).
+
+\begin{figure}[ht]
+\centering
+\begin{LTR}
+\includegraphics[width=0.75\textwidth]{figures/performance_plot.pdf}
+\end{LTR}
+\caption{דיוק גילוי איומים (F1-Score) של סוכן ה-LLM לעומת מסווגים מסורתיים כתלות בגודל הדגם.}
+\label{fig:performance_plot}
+\end{figure}
 
 בנוסף, זמן הסיווג הממוצע לאירוע בודד במעבדת הניסויים עמד על פחות מ-120 מילי-שניות כאשר נעשה שימוש במודל מקומי קטן (כגון Llama-3-8B), ועל כ-1.5 שניות כאשר נעשה שימוש בשרתים מבוזרים של OpenAI \cite{Srinivasan2025}. תוצאות אלו מאפשרות לשלב את מנוע הניתוח ישירות בתוך ערוצי התעבורה הראשיים של הארגון (\LRE{Inline Deployment}) ללא יצירת צוואר בקבוק או פגיעה בחוויית המשתמש.
 
